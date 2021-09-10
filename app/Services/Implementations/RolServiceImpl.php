@@ -2,7 +2,10 @@
 
 namespace App\Services\Implementations;
 
+use App\Models\Module;
+use App\Models\Permission;
 use App\Models\Rol;
+use App\Models\RolHasModule;
 use App\Services\Interfaces\IRolServiceInterface;
 
 class RolServiceImpl implements IRolServiceInterface
@@ -12,6 +15,9 @@ class RolServiceImpl implements IRolServiceInterface
     function __construct()
     {
         $this->model = new Rol();
+        $this->modelRolHasModule = new RolHasModule();
+        $this->modelModule = new Module();
+        $this->modelPermission = new Permission();
     }
     function getRol()
     {
@@ -37,7 +43,19 @@ class RolServiceImpl implements IRolServiceInterface
      */
     function postRol(array $rol)
     {
-        $this->model->create($rol);
+        $data = $this->model->create($rol);
+        $idRol = $data->id;
+        $arrayIdModule = $this->modelModule->select('id')->pluck('id')->toArray();
+        $arrayModule = array();
+        foreach ($arrayIdModule as $key) {
+
+            $arrayModule['id_rol'] = $idRol;
+            $arrayModule['id_module'] = $key;
+
+            $dataInserted = $this->modelRolHasModule->create($arrayModule);
+            $dataId['id_rol_has_module'] = $dataInserted->id;
+            $this->modelPermission->create($dataId);
+        }
     }
 
     function putRol(array $rol, int $id)

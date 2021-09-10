@@ -4,21 +4,18 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Permission extends Model
+class RolHasModule extends Model
 {
 
-    protected $table = "permissions";
+    protected $table = "roles_has_modules";
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'id_rol_has_module',
-        'r',
-        'w',
-        'u',
-        'd'
+        'id_rol',
+        'id_module'
     ];
 
     /**

@@ -16,15 +16,13 @@ class CreatePermissionsTable extends Migration
         Schema::create('permissions', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->tinyIncrements('id')->unsigned();
-            $table->unsignedTinyInteger('id_rol');
-            $table->unsignedTinyInteger('id_module');
-            $table->tinyInteger('r');
-            $table->tinyInteger('w');
-            $table->tinyInteger('u');
-            $table->tinyInteger('d');
+            $table->unsignedTinyInteger('id_rol_has_module');
+            $table->tinyInteger('r')->default('0');
+            $table->tinyInteger('w')->default('0');
+            $table->tinyInteger('u')->default('0');
+            $table->tinyInteger('d')->default('0');
             $table->timestamps();
-            $table->foreign('id_rol')->references('id')->on('rols')->onDelete('cascade');
-            $table->foreign('id_module')->references('id')->on('modules')->onDelete('cascade');
+            $table->foreign('id_rol_has_module')->references('id')->on('roles_has_modules')->onDelete('cascade');
         });
     }
 
